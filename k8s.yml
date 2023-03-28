@@ -20,7 +20,7 @@ spec:
           image: release-ci.daocloud.io/skoala/sentinel-cluster-flow-server:v0.1.0
           env:
             - name: JAVA_OPTS
-              value: -Dnacos.address=nacos-jia.skoala-jia:8848
+              value: -Dnacos.address=nacos-jia.skoala-jia:8848 -Dcsp.sentinel.dashboard.server=localhost:8080
           ports:
             - name: http
               containerPort: 18730
