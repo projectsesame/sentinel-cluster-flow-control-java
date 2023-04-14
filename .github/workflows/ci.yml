@@ -57,10 +57,10 @@ jobs:
     
       - name: Get Hash
         id: hash
-        run: echo "${GITHUB_SHA::6}"
+        run: echo "${{ github.sha }}"
 
       - name: "Build and Push"
         uses: docker/build-push-action@v4
         with:
           push: true
-          tags: release.daocloud.io/skoala/sentinel-cluster-flow-control-java:${{ env.hash }}
+          tags: release.daocloud.io/skoala/sentinel-cluster-flow-control-java:${{ github.sha }}
