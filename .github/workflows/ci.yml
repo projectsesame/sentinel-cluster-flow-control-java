@@ -63,4 +63,4 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          tags: release.daocloud.io/skoala/sentinel-cluster-flow-control-java:${GITHUB_SHA::6}
+          tags: release.daocloud.io/skoala/sentinel-cluster-flow-control-java:${{ env.hash }}
