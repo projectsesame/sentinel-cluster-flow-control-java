@@ -55,8 +55,12 @@ jobs:
           username: ${{ secrets.DAOCLOUD_REGISTRY_USERNAME }}
           password: ${{ secrets.DAOCLOUD_REGISTRY_PWD }}
     
+      - name: Get Hash
+        id: hash
+        run: echo "git_hash=$(git rev-parse --short "$GITHUB_SHA")" >> $GITHUB_HASH
+
       - name: "Build and Push"
         uses: docker/build-push-action@v4
         with:
           push: true
-          tags: user/latest
+          tags: release.daocloud.io/skoala/sentinel-cluster-flow-control-java:${{ env.hash }}
