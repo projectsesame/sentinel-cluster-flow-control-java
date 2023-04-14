@@ -47,9 +47,9 @@ jobs:
           registry: release.daocloud.io
           username: ${{ sectets.DAOCLOUT_REGISTRY_USERNAME }}
           password: ${{ secrets.DAOCLOUT_REGISTRY_PWD }}
-      
-      - name: "Build and push"
+    
+      - name: "Build and Push"
         uses: docker/build-push-action@v4
         with:
           push: true
-          tags: latest
+          tags: user/latest
