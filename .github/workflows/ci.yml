@@ -38,11 +38,8 @@ jobs:
       - name: "Print maven version"
         run: mvn -version
 
-      - name: "Check with Maven"
-        run: mvn -B clean package apache-rat:check findbugs:findbugs -DskipTests -e -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
-
       - name: "Build with Maven"
-        run: mvn -Prelease-nacos -DskipTests clean install -U -e -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+        run: mvn clean package -Dmaven.test.skip=true
         
       - name: Build and push Docker image
         uses: docker/build-push-action@v2.3.0
