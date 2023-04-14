@@ -3,7 +3,7 @@ FROM maven:3.9.1 AS builder
 WORKDIR /app
 
 COPY ./  ./
-RUN ./mvnw --batch-mode clean package -DskipTests
+RUN mvn clean package -DskipTests
 
 FROM docker.m.daocloud.io/openjdk:8-alpine3.9
 
