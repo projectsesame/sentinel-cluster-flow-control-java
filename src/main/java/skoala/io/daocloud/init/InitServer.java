@@ -19,8 +19,8 @@ import java.util.Properties;
 import java.util.Set;
 
 public class InitServer implements InitFunc {
-    private static final String namespaceSetDataId = "cluster-server-namespace-set";
-    private static final String serverTransportDataId = "cluster-server-transport-config";
+    private static final String NAMESPACESET_POSTFIX = "-cluster-server-namespace-set";
+    private static final String SERVERTRANSPORT_POSTFIX = "-cluster-server-transport-config";
 
     public static final String FLOW_POSTFIX = "-flow-rules";
     public static final String PARAM_FLOW_POSTFIX = "-param-rules";
@@ -30,11 +30,17 @@ public class InitServer implements InitFunc {
 
     @Override
     public void init() throws Exception {
-        String nacosAddress = System.getProperty("NACOS_ADDRESS");
+        String nacosAddress = System.getProperty("nacos.address");
         if (StringUtil.isBlank(nacosAddress)){
-            throw new RuntimeException("NACOS_ADDRESS env must be set");
+            throw new RuntimeException("nacos.address start properties must be set");
         }
         System.out.printf("nacos address: %s\n", nacosAddress);
+
+        String serverName = System.getProperty("server.name");
+        if (StringUtil.isBlank(serverName)){
+            throw new RuntimeException("server.name start properties must be set");
+        }
+        System.out.printf("server name: %s\n", serverName);
 
         ClusterFlowRuleManager.setPropertySupplier(namespace -> {
             String[] apps = parseAppName(namespace);
@@ -64,11 +70,11 @@ public class InitServer implements InitFunc {
         });
 
         ReadableDataSource<String, Set<String>> namespaceDs = new NacosDataSource<>(nacosAddress, DEFAULT_GROUP,
-                namespaceSetDataId,
+                serverName + NAMESPACESET_POSTFIX,
                 source -> JSON.parseObject(source, new TypeReference<Set<String>>() {}));
         ClusterServerConfigManager.registerNamespaceSetProperty(namespaceDs.getProperty());
         ReadableDataSource<String, ServerTransportConfig> transportConfigDs = new NacosDataSource<>(nacosAddress, DEFAULT_GROUP,
-                serverTransportDataId,
+                serverName + SERVERTRANSPORT_POSTFIX,
                 source -> JSON.parseObject(source, new TypeReference<ServerTransportConfig>() {}));
         ClusterServerConfigManager.registerServerTransportProperty(transportConfigDs.getProperty());
     }
